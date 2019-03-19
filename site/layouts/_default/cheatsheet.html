@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{ partial "header" . }}
+  </head>
+  <body data-spy="scroll" data-target="#cheatsheet-docs-nav" data-offset="0">
+
+    {{ partial "skippy" . }}
+
+    {{ partial "docs-navbar" . }}
+
+    <div class="container-fluid">
+      <div class="row flex-xl-nowrap">
+        <div class="col-12 col-md-3 col-xl-2 bd-sidebar">
+          {{ partial "cheatsheet-sidebar" . }}
+        </div>
+
+        <div class="d-none d-xl-block col-xl-2 bd-toc">
+          <a href="javascript: toggle()" class="btn btn-primary btn-block">Toggle content</a>
+        </div>
+
+        <main id="content" class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content" role="main">
+          {{ range $key, $value := .Site.Data.cheatsheet }}
+            {{ range where $.Site.Pages ".Params.title" "eq" $value  }}
+              <h1 class="bd-title bd-content-title mt-4" id="{{ .Params.group }}-{{ .Title | urlize }}">{{ .Title | markdownify }}</h1>
+
+              <hr class="border border-primary">
+
+              <div class="bd-content">
+                {{ .Content }}
+              </div>
+            {{ end }}
+          {{ end }}
+        </main>
+      </div>
+    </div>
+
+    {{ partial "footer" . }}
+    {{ partial "scripts" . }}
+
+    <script>
+        const selector = ".bd-clipboard, .highlight, .bd-callout, .bd-content > p, .bd-content > p + ul";
+        const elems = document.querySelectorAll(selector);
+
+        let state = null;
+
+        const fHide = function(val) { val.style.display = 'none'; state = false };
+        const fShow = function(val) { val.style.display = 'block'; state = true };
+
+        function show() { elems.forEach(fShow); };
+        function hide() {
+          elems.forEach(fHide);
+
+          // Refine after first pass
+          document.querySelectorAll("p[style='display: none;']~h2, p[style='display: none;']~h3")
+            .forEach(fHide);
+        };
+
+        function toggle() { state ? hide() : show(); }
+
+        function initialize() { hide(); }
+
+        initialize();
+    </script>
+  </body>
+</html>

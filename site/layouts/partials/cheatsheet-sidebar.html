@@ -1,0 +1,20 @@
+<form class="bd-search d-flex align-items-center">
+  <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off" data-docs-version="{{ .Site.Params.docs_version }}">
+  <button class="btn btn-link bd-search-docs-toggle d-md-none p-0 ml-3" type="button" data-toggle="collapse" data-target="#cheatsheet-docs-nav" aria-controls="cheatsheet-docs-nav" aria-expanded="false" aria-label="Toggle docs navigation">
+    {{ partial "icons/menu.svg" (dict "width" "30" "height" "30") }}
+  </button>
+</form>
+
+<nav class="collapse bd-links navbar" id="cheatsheet-docs-nav" aria-label="Main navigation">
+  <div class="">
+    <ul class="nav nav-pills flex-column">
+    {{- range $value := .Site.Data.cheatsheet -}}
+      {{ range where $.Site.Pages ".Params.title" "eq" $value  }}
+      <li class="nav-item">
+        <a class="nav-link" href="#{{ .Params.group }}-{{ $value | urlize }}">{{- $value -}}</a>
+      </li>
+      {{- end -}}
+    {{- end }}
+    </ul>
+  </div>
+</nav>
