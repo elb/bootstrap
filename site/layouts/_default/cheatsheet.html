@@ -24,7 +24,7 @@
             {{ range where $.Site.Pages ".Params.title" "eq" $value  }}
               <h1 class="bd-title bd-content-title mt-4" id="{{ .Params.group }}-{{ .Title | urlize }}">{{ .Title | markdownify }}</h1>
 
-              <hr class="border border-primary">
+              <hr />
 
               <div class="bd-content">
                 {{ .Content }}
